@@ -1,19 +1,18 @@
 package com.payflow.payflow.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
-    private String id;
+    private UUID id;
     private String name;
     private String email;
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
 }
