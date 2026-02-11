@@ -14,5 +14,5 @@ public class User {
     private UUID id;
     private String name;
     private String email;
-    private BigDecimal balance = BigDecimal.ZERO;
+    private BigDecimal balance;
 }
