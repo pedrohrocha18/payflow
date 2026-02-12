@@ -7,7 +7,6 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -40,6 +39,29 @@ public class UserRepository {
                 .filter(user -> user.getEmail().equals(mail))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public User deleteById(UUID id) throws IOException {
+        User user = users.stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+
+        users.remove(user);
+        saveUser();
+        return user;
+    }
+
+    public User updateUser(UUID id, BigDecimal balance) throws IOException {
+        User user = users.stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        user.setBalance(balance);
+        saveUser();
+
+        return user;
     }
 
     public void saveUser() throws IOException {

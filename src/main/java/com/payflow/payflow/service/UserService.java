@@ -1,5 +1,7 @@
 package com.payflow.payflow.service;
 
+import com.payflow.payflow.dto.UpdateUserRequest;
+import com.payflow.payflow.dto.UserResponse;
 import com.payflow.payflow.model.User;
 import com.payflow.payflow.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,6 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public String helloWorld() {
-        return "Hello World! =)";
     }
 
     public User createUser(String name, String email) {
@@ -44,7 +42,29 @@ public class UserService {
         return userRepository.getAllUsers();
     }
 
-    public User findById(UUID id) {
-        return userRepository.getUserById(id);
+    public UserResponse findById(UUID id) {
+        User user = userRepository.getUserById(id);
+
+        return new UserResponse(user.getId(), user.getName(),
+                user.getEmail(), user.getBalance());
+    }
+
+    public UserResponse updateUser(UUID id, UpdateUserRequest request) throws IOException {
+        BigDecimal newBalance = request.balance();
+
+        User updateUser = userRepository.updateUser(id, newBalance);
+
+        return new UserResponse(
+                updateUser.getId(),
+                updateUser.getName(),
+                updateUser.getEmail(),
+                updateUser.getBalance()
+        );
+    }
+
+    public UserResponse deleteUser(UUID id) throws IOException {
+        User userdeleted = userRepository.deleteById(id);
+
+        return new UserResponse(userdeleted.getId(), userdeleted.getName(), userdeleted.getEmail(), userdeleted.getBalance());
     }
 }
